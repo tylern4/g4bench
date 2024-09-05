@@ -44,7 +44,7 @@ endif()
 
 # find packages
 find_package(Geant4 REQUIRED)
-find_package(CLHEP REQUIRED)
+# find_package(CLHEP REQUIRED)
 find_package(OpenGL)
 
 # c++17
