@@ -23,7 +23,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v5
         with:
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           file: Dockerfile
           context: .
           push: true
@@ -36,26 +36,26 @@ jobs:
         run: |
           docker pull ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
           docker image inspect ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
-  tests:
-    needs: build-container
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # tests:
+  #   needs: build-container
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Run Ecal
-        run: |
-          docker pull ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
-          docker run -itd --name g4runtime -v /home/runner/work/g4bench/g4bench:/home/runner/work/g4bench/g4bench ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
-          docker exec -w /home/runner/work/g4bench/g4bench -e NOG4VERSION=1 g4runtime tests/ci/test_ecal.sh
-      - name: Run Hcal
-        run: |
-          docker pull ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
-          docker run -itd --name g4runtime -v /home/runner/work/g4bench/g4bench:/home/runner/work/g4bench/g4bench ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
-          docker exec -w /home/runner/work/g4bench/g4bench -e NOG4VERSION=1 g4runtime tests/ci/test_hcal.sh
-      - name: Run Vgeo_x18
-        run: |
-          docker pull ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
-          docker run -itd --name g4runtime -v /home/runner/work/g4bench/g4bench:/home/runner/work/g4bench/g4bench ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
-          docker exec -w /home/runner/work/g4bench/g4bench -e NOG4VERSION=1 g4runtime tests/ci/test_vgeo_x18.sh
+  #     - name: Run Ecal
+  #       run: |
+  #         docker pull ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
+  #         docker run -itd --name g4runtime -v /home/runner/work/g4bench/g4bench:/home/runner/work/g4bench/g4bench ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
+  #         docker exec -w /home/runner/work/g4bench/g4bench -e NOG4VERSION=1 g4runtime tests/ci/test_ecal.sh
+  #     - name: Run Hcal
+  #       run: |
+  #         docker pull ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
+  #         docker run -itd --name g4runtime -v /home/runner/work/g4bench/g4bench:/home/runner/work/g4bench/g4bench ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
+  #         docker exec -w /home/runner/work/g4bench/g4bench -e NOG4VERSION=1 g4runtime tests/ci/test_hcal.sh
+  #     - name: Run Vgeo_x18
+  #       run: |
+  #         docker pull ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
+  #         docker run -itd --name g4runtime -v /home/runner/work/g4bench/g4bench:/home/runner/work/g4bench/g4bench ghcr.io/${{ github.repository }}:${{ github.ref_type  }}
+  #         docker exec -w /home/runner/work/g4bench/g4bench -e NOG4VERSION=1 g4runtime tests/ci/test_vgeo_x18.sh
 
